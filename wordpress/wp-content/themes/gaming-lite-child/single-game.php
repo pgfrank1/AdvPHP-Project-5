@@ -8,14 +8,20 @@
           while ( have_posts() ) :
 
             the_post();
-            get_template_part( 'template-parts/content', 'post');
-
+            get_template_part( 'template-parts/content', 'post-game');
             echo get_field('description');
-            foreach (get_field('platform') as $lol)
+
+            $query = array('post_type' => 'game', 'orderby' => 'title', 'order' => 'ASC');
+            $games = new WP_Query($query);
+            if ( $games -> have_posts() )
+            {
+              while ( $games -> have_posts() )
               {
-                echo $lol;
+                $games->the_post();
+                echo '<br>' . get_the_title();
               }
-            echo get_field('esrb_rating');
+            }
+
 
             wp_link_pages(
               array(
